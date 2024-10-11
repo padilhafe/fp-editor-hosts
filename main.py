@@ -2,6 +2,7 @@ import json
 from app.CriarArquivoHosts import *
 from funcs.Constantes import *
 from funcs.MenuPrincipal import MenuPrincipal
+from funcs.MenuArquivos import MenuArquivos
 from funcs.InputDominio import InputDominio
 
 hosts = []
@@ -17,9 +18,20 @@ print("""
 while True:
     opcao = MenuPrincipal()
     if opcao == 1:
-        with open(CAMINHO_ARQUIVO_HOSTS_GERAL, "r") as file:
-            hosts = file.readlines()
+
+        with open(CAMINHO_ARQUIVOS_HOSTS, "r") as file:
+            arquivos = json.load(file)
             file.close()
+        
+        caminho = MenuArquivos(arquivos)
+
+        try:
+            with open(caminho, "r") as file:
+                hosts = file.readlines()
+                file.close()
+        except FileNotFoundError:
+            hosts = []
+            modo = "w"
         
         if hosts:
             print("Arquivo hosts já existe. O que deseja fazer?\n")
@@ -46,7 +58,7 @@ while True:
 
         dominios = InputDominio()
         
-        CriarArquivoHosts(CAMINHO_ARQUIVO_HOSTS_GERAL, modo, dominios, subdominios)
+        CriarArquivoHosts(caminho, modo, dominios, subdominios)
 
     elif opcao == 2:
         print("Qual arquivo deseja editar?")
