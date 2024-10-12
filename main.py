@@ -1,12 +1,29 @@
 import json
+import os
+from dotenv import load_dotenv
 from app.CriarArquivoHosts import *
 from funcs.Constantes import *
 from funcs.MenuPrincipal import MenuPrincipal
 from funcs.MenuArquivos import MenuArquivos
 from funcs.InputDominio import InputDominio
 
-hosts = []
-option = 's'
+# Instanciação de variáveis globais
+hosts_files = {}
+
+# Tenta carregar variáveis de ambiente do arquivo .env para dentro da variável hosts_files
+try:
+    load_dotenv(override=True, dotenv_path=".env")
+except FileNotFoundError:
+    print("Arquivo .env não encontrado. Por favor, crie um arquivo.env com as configurações necessárias (consulte o arquivo readme.md para mais detalhes).")
+    exit(1)
+
+try:
+    for environment_variable in os.environ:
+        if "DIR_HOSTS" in environment_variable:
+            hosts_files[environment_variable.replace("DIR_HOSTS_", "").lower()] = os.environ[environment_variable]
+except KeyError as e:
+    print(f"Variável de ambiente '{e}' não encontrada.")
+    exit(1)
 
 print("""
 =======================================================
@@ -18,13 +35,8 @@ print("""
 while True:
     opcao = MenuPrincipal()
     if opcao == 1:
-
-        with open(CAMINHO_ARQUIVOS_HOSTS, "r") as file:
-            arquivos = json.load(file)
-            file.close()
+        caminho = MenuArquivos(hosts_files)
         
-        caminho = MenuArquivos(arquivos)
-
         try:
             with open(caminho, "r") as file:
                 hosts = file.readlines()
@@ -60,17 +72,9 @@ while True:
         
         CriarArquivoHosts(caminho, modo, dominios, subdominios)
 
-    elif opcao == 2:
-        print("Qual arquivo deseja editar?")
-        
-    elif opcao == 3:
-        print("falta implementar")
-    elif opcao == 4:
-        print("falta implementar")
-    elif opcao == 5:
-        print("falta implementar")
     elif opcao == 0:
         print("Encerrando...")
         exit()
+
     else:
         print("Opção inválida! Informe novamente.\n")
