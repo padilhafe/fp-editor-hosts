@@ -1,6 +1,7 @@
 import json
 import os
 from dotenv import load_dotenv
+from colored import Fore, Back, Style
 from app.CriarArquivoHosts import *
 from funcs.Constantes import *
 from funcs.MenuPrincipal import MenuPrincipal
@@ -14,7 +15,7 @@ hosts_files = {}
 try:
     load_dotenv(override=True, dotenv_path=".env")
 except FileNotFoundError:
-    print("Arquivo .env não encontrado. Por favor, crie um arquivo.env com as configurações necessárias (consulte o arquivo readme.md para mais detalhes).")
+    print(f"{Fore.red}Arquivo .env não encontrado. Por favor, crie um arquivo.env com as configurações necessárias (consulte o arquivo readme.md para mais detalhes).{Back.reset}")
     exit(1)
 
 try:
@@ -25,7 +26,7 @@ except KeyError as e:
     print(f"Variável de ambiente '{e}' não encontrada.")
     exit(1)
 
-print("""
+print(f"""
 =======================================================
 # Bem vindo a ferramenta de criação de arquivos hosts #
 =======================================================
@@ -48,7 +49,7 @@ while True:
                 modo = "w"
             
             if hosts:
-                print("Arquivo hosts já existe. O que deseja fazer?\n")
+                print(f"{Fore.red}{Style.bold}Arquivo hosts já existe. O que deseja fazer?{Style.reset}\n")
                 resposta = int(input("1. Sobrescrever\n2. Adicionar ao final\n3. Exibir conteúdo\n0. Cancelar operação\n > "))
                 if resposta == 1:
                     modo = "w"
