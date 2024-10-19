@@ -13,7 +13,7 @@ def MenuArquivos(arquivos):
                 return arquivos[chave_selecionada]
             elif opcao == 0:
                 print("Operação cancelada.")
-                return None
+                exit()
             else:
                 print("Opção inválida! Tente novamente.")
         except ValueError:
