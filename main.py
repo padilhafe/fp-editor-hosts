@@ -1,7 +1,6 @@
 import json
 import os
 from dotenv import load_dotenv
-from colored import Fore, Back, Style
 from app.CriarArquivoHosts import *
 from funcs.Constantes import *
 from funcs.MenuPrincipal import MenuPrincipal
@@ -15,7 +14,7 @@ hosts_files = {}
 try:
     load_dotenv(override=True, dotenv_path=".env")
 except FileNotFoundError:
-    print(f"{Fore.red}Arquivo .env não encontrado. Por favor, crie um arquivo.env com as configurações necessárias (consulte o arquivo readme.md para mais detalhes).{Back.reset}")
+    print(f"Arquivo .env não encontrado. Por favor, crie um arquivo.env com as configurações necessárias (consulte o arquivo readme.md para mais detalhes).")
     exit(1)
 
 try:
@@ -49,7 +48,7 @@ while True:
                 modo = "w"
             
             if hosts:
-                print(f"{Fore.red}{Style.bold}Arquivo hosts já existe. O que deseja fazer?{Style.reset}\n")
+                print(f"Arquivo hosts já existe. O que deseja fazer?\n")
                 resposta = int(input("1. Sobrescrever\n2. Adicionar ao final\n3. Exibir conteúdo\n0. Cancelar operação\n > "))
                 if resposta == 1:
                     modo = "w"
